@@ -12,6 +12,7 @@ class Snake : public Entity{
 private:
     vector<Entity>body;
     int direction = LEFT;
+    bool isDead;
 
 public:
 
@@ -24,14 +25,18 @@ public:
     Snake(int startX, int startY,
           int bWidth, int bHeight,
           int zeroX, int zeroY);
-        /*: Entity(startX, startY, 'A'); {
+        : Entity(startX, startY, 'A'); {
             Entity::SetBoundaries(bWidth, bHeight, zeroX, zeroY);
             body.push_back(*this)
-    }*/
-    
-    void move(DIRECTIONS direction) override;
+    }
 
-    void draw() override;
+   ~Snake();
+    
+    void MovingTo(DIRECTIONS direction);
+
+    void Grow();
+
+    void Draw() override;
 };
 
 #endif //SNAKE_H

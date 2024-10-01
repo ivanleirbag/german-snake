@@ -20,6 +20,10 @@ public:
 
     int GetPosx();
     int GetPosy();
+    int GetBZerox();
+    int GetBZeroy();
+    int GetBHeight();
+    int GetBWidth();
     char GetSymbol();
 
     void SetPosx(int sPosx);
@@ -28,12 +32,12 @@ public:
 
     void SetBoundaries(int sWidth, int sHeight, int sZerox, int sZeroy);
 
-    virtual void move(){
-    }
+    /*virtual void moveTo(){
+    }*/
 
     virtual void draw(void *arg);
 
-    bool collidesWith(const Entity& other);
+    bool collidesWith(Entity& other);
 
 };
 

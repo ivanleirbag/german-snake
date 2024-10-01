@@ -16,6 +16,18 @@
     int Entity::GetPosy(){
         return posy;
     }
+    int Entity::GetBZerox(){
+        return bZerox;
+    }
+    int Entity::GetBZeroy(){
+        return bZeroy;
+    }
+    int Entity::GetBHeight(){
+        return bHeight;
+    }
+    int Entity::GetBWidth(){
+        return bWidth;
+    }
     char Entity::GetSymbol(){
         return symbol;
     }
@@ -30,21 +42,29 @@
         symbol = sSymbol;
     }
 
+
     void Entity::SetBoundaries(int sWidth, int sHeight, int sZerox, int sZeroy){
         bWidth = sWidth;
         bHeight = sHeight;
         bZerox = sZerox;
         bZeroy = sZeroy;
+
+        posx += bZerox;
+        posy += bZeroy;
     }
 
-    void Entity::move(){
-    }
+    /*void Entity::moveTo(){
+    }*/
 
     void Entity::draw(void *arg){
-        move(posy, posx);
+        move((posy+bZeroy), (posx+bZerox));
         printw("%c", symbol);
     }
 
-    bool Entity::collidesWith(const Entity& other){
-        return (this->posx == other.GetPosx() && this->posy == other.GetPosy())
+    bool Entity::collidesWith(Entity& other){
+        if (this->posx == other.GetPosx() && this->posy == other.GetPosy()){
+            return true;
+        }else{
+            return false;
+        }
     }

@@ -8,6 +8,7 @@
 
 #include "TTimer.h"
 #include "Board.h"
+#include "Entity.h"
 
 #define ESC 27
 #define ENTER 10
@@ -33,6 +34,11 @@ int main(){
     board.SetDimensions(WIDTH, HEIGHT);
     board.SetInitialPos(ZERO_X, ZERO_Y);
 
+    Entity entity(2, 4, '*');
+    entity.SetBoundaries(WIDTH, HEIGHT,
+                        (ZERO_X+board.GetMargin()),
+                        (ZERO_Y+board.GetMargin()));
+    
 
 while (menu){
         attroff(A_REVERSE);
@@ -59,6 +65,7 @@ while (menu){
             clear();
             refresh();
             board.DisplayBoard();
+            entity.draw(nullptr);
             key = getch();
             switch (key){
             case ESC:
