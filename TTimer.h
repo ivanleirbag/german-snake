@@ -4,6 +4,7 @@
 #include <iostream>
 #include <functional>
 #include <time.h>
+#include "Entity.h"
 
 
 class TTimer
@@ -18,6 +19,8 @@ class TTimer
         };
 
         void AttachOnTimerReady(void (*ptrFun)(void *arg), void *aArg);
+        void AttachOnTimerEnttReady(void(*aOnTimer)(Entity *arg), Entity *aArg);
+        //void AttachOnTimer2Ready(std::function<void(void*)> func, void *aArg);
 
         void StartTimer(int mSec, enum TIMER_MODE mode);
         void StopTimer();
@@ -37,7 +40,9 @@ class TTimer
 
         std::function<void(void *arg)>onTimerCpp;/*No usar*/
         void (*onTimer)(void *arg);
+        void (*onEnttTimer)(Entity *arg);
         void *arg;
+        Entity *EnttArg;
 };
 
 #endif // TTIMER_H

@@ -4,6 +4,10 @@
         posx = cPosx;
         posy = cPosy;
         symbol = cSymbol;
+        bWidth = 0;
+        bHeight = 0;
+        bZerox = 0;
+        bZeroy = 0;
     }
 
     Entity::~Entity(){
@@ -48,16 +52,13 @@
         bHeight = sHeight;
         bZerox = sZerox;
         bZeroy = sZeroy;
-
-        posx += bZerox;
-        posy += bZeroy;
     }
 
     /*void Entity::moveTo(){
     }*/
 
     void Entity::draw(void *arg){
-        move((posy+bZeroy), (posx+bZerox));
+        move((posy), (posx));
         printw("%c", symbol);
     }
 

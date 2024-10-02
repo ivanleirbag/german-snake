@@ -1,5 +1,6 @@
 #include "TTimer.h"
 
+
 TTimer::TTimer()
 {
     //ctor
@@ -20,6 +21,13 @@ void TTimer::AttachOnTimerReady(void(*aOnTimer)(void* arg), void *aArg)
     onTimer = aOnTimer;
     arg = aArg;
 }
+
+void TTimer::AttachOnTimerEnttReady(void(*aOnEnttTimer)(Entity* arg), Entity *aArg)
+{
+    onEnttTimer = aOnEnttTimer;
+    EnttArg = aArg;
+}
+
 
 void TTimer::StartTimer(int mSec, enum TIMER_MODE mode)
 {
@@ -47,6 +55,9 @@ void TTimer::TimerTask()
             onTimer(arg);
         if(onTimerCpp != nullptr)
             onTimerCpp(arg);
+
+        if(onEnttTimer != nullptr)
+            onEnttTimer(EnttArg);
     }
 }
 

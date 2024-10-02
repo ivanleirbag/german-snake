@@ -19,6 +19,8 @@ class Board
 
         void SetInitialPos(int sZerox, int sZeroy);
 
+
+
         void DisplayBoard();
 
     protected:

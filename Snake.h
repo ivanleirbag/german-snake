@@ -11,11 +11,11 @@ class Snake : public Entity{
 
 private:
     vector<Entity>body;
-    int direction = LEFT;
+    int direction;
+    int lastDirection;
     bool isDead;
 
 public:
-
     enum DIRECTIONS{
         UP = 0,
         RIGHT,
@@ -25,18 +25,24 @@ public:
     Snake(int startX, int startY,
           int bWidth, int bHeight,
           int zeroX, int zeroY);
-        : Entity(startX, startY, 'A'); {
+        /*: Entity(startX, startY, 'A'); {
             Entity::SetBoundaries(bWidth, bHeight, zeroX, zeroY);
             body.push_back(*this)
-    }
+    }*/
 
    ~Snake();
+
+    void SetDirection(int direc);
+
+    int GetDirection();
+
+    vector<Entity> GetBody();
     
-    void MovingTo(DIRECTIONS direction);
+    void MovingTo(Entity *fruit);
 
-    void Grow();
+    void DrawSnake(void *arg);  //deprecated
 
-    void Draw() override;
+    void KillSnake();
 };
 
 #endif //SNAKE_H

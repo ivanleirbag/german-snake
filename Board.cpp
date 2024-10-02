@@ -42,13 +42,11 @@ void Board::DisplayBoard(){
     int posy = 0;
     int i, j;
 
-    for (i=0; i < height+margin; i++){
-        for (j=0; j < width+margin; j++){
-            move((posy+zeroy+i), (posx+zerox+j));
-            if(i < margin || i >= height || j < margin || j >= width){
+    for (i=0-margin; i < height+margin; i++){
+        for (j=0-margin; j < width+margin; j++){ 
+            if(i < 0 || i >= height || j < 0 || j >= width){
+                move((posy+zeroy+i), (posx+zerox+j));
                 printw("+");
-            }else{
-                printw(" ");
             }
         }
     }
