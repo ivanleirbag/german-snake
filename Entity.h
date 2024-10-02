@@ -35,7 +35,7 @@ public:
     /*virtual void moveTo(){
     }*/
 
-    virtual void draw(void *arg);
+    void draw(void *arg);
 
     bool collidesWith(Entity& other);
 

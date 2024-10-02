@@ -13,14 +13,15 @@ private:
     vector<Entity>body;
     int direction;
     int lastDirection;
-    bool isDead;
+    
 
 public:
+    bool isDead;
     enum DIRECTIONS{
-        UP = 0,
+        UP = -2,
         RIGHT,
+        LEFT = 1,
         DOWN,
-        LEFT,
     };
     Snake(int startX, int startY,
           int bWidth, int bHeight,

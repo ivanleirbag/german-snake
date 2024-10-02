@@ -38,14 +38,12 @@ void Board:: SetInitialPos(int sZerox, int sZeroy){
 }
 
 void Board::DisplayBoard(){
-    int posx = 0;
-    int posy = 0;
     int i, j;
 
     for (i=0-margin; i < height+margin; i++){
         for (j=0-margin; j < width+margin; j++){ 
             if(i < 0 || i >= height || j < 0 || j >= width){
-                move((posy+zeroy+i), (posx+zerox+j));
+                move((zeroy+i), (zerox+j));
                 printw("+");
             }
         }

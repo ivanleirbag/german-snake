@@ -9,6 +9,7 @@ Snake::Snake(int startX, int startY,
         this->SetPosy(startY);
         this->direction = LEFT;
         this->lastDirection = direction;
+        this->isDead = false;
         body.push_back(*this);
         }
 
@@ -16,8 +17,12 @@ Snake::~Snake(){
 }
 
 void Snake::SetDirection(int direc){
-    lastDirection = direction;
-    direction = direc;
+    if (direc != (-1)*direction){
+        lastDirection = direction;
+        direction = direc;
+    }else{
+        //no se puede ir para atras :P
+    }
 }
 
 int Snake::GetDirection(){
@@ -71,9 +76,9 @@ void Snake::MovingTo(Entity *fruit){
     }
 
     //Chequea colisiones
-   if (body.size() > 2){
-        for (int i = 1; i < body.size(); i++){
-            if (body.at(i).collidesWith(body.at(i-1))){
+   if (body.size() > 3){
+        for (int i = 2; i < body.size(); i++){
+            if (body.at(0).collidesWith(body.at(i-1))){
                 isDead = true;
             }
         }

@@ -63,7 +63,7 @@
     }
 
     bool Entity::collidesWith(Entity& other){
-        if (this->posx == other.GetPosx() && this->posy == other.GetPosy()){
+        if (posx == other.GetPosx() && posy == other.GetPosy()){
             return true;
         }else{
             return false;

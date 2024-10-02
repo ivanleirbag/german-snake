@@ -6,7 +6,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <functional>
-#include <unistd.h>
+#include <chrono>
+#include <thread>
 
 #include "TTimer.h"
 #include "Board.h"
@@ -19,8 +20,10 @@
 #define WIDTH 40
 #define ZERO_X 4
 #define ZERO_Y 2
+#define MARGIN 2
  //g++ ./main.cpp ./TTimer.cpp ./Board.cpp ./Entity.cpp ./Snake.cpp -o main -lncurses
 
+using namespace std;
 
 int key, timerMs;
 bool menu = true;
@@ -42,7 +45,7 @@ TTimer timer;
 TTimer drawTimer;
 
 
-void DrawSnake(void *arg);
+void RenderGame(void *arg);
 
 void CallSnakeMovement(Entity *entity);
 
@@ -55,6 +58,7 @@ int main(){
    
     board.SetDimensions(WIDTH, HEIGHT);
     board.SetInitialPos(ZERO_X, ZERO_Y);
+    board.SetMargin(MARGIN);
 
 
     Entity *entityPtr = &entity;
@@ -66,17 +70,16 @@ int main(){
     timer.AttachOnTimerEnttReady(CallSnakeMovement, enttPtr);
     timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
 
-    drawTimer.AttachOnTimerReady(DrawSnake, nullptr);
+    drawTimer.AttachOnTimerReady(RenderGame, nullptr);
     drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
 
 while (menu){
         attroff(A_REVERSE);
         curs_set(0);
-        clear();
+        erase();
         printw("> Presiona [ENTER] para iniciar el programa.\n\n");
         printw("> Presiona [ESC] para cerrar el programa.");
         refresh();
-
         switch (key = getch()){
         case ESC:
             endwin();
@@ -102,6 +105,7 @@ while (menu){
                 menu = false;
                 break;
             case ENTER:
+                snake.KillSnake();
                 break;
             case KEY_UP:
                 snake.SetDirection(Snake::UP);
@@ -118,22 +122,32 @@ while (menu){
             default:
                 break;
             }
-            erase();
+
+
             timer.TimerTask();
-            board.DisplayBoard();
             drawTimer.TimerTask();
             entity.draw(nullptr);
             
 
-
-            move(30, 30);
-            printw("%d %d %d %ld",
-             snake.GetDirection(),
-             snake.GetPosx(),
-             snake.GetPosy(),
-             (snake.GetBody().size()));
-
-
+            if(snake.isDead){
+                timer.StopTimer();
+                drawTimer.StopTimer();
+                move((ZERO_Y+(HEIGHT/2)), (ZERO_X+(WIDTH/2)-4));
+                attron(A_REVERSE);
+                printw("Perdiste!");
+                refresh();
+                for (int i=0-MARGIN; i < (HEIGHT+MARGIN)/2; i++){
+                    for (int j=0-MARGIN; j < WIDTH+MARGIN; j++){ 
+                        move((ZERO_Y+i), (ZERO_X+j));
+                        printw(" ");
+                        move((ZERO_Y+HEIGHT-i), (ZERO_X+WIDTH-j));
+                        printw(" ");
+                        refresh();
+                        this_thread::sleep_for(chrono::milliseconds(5));  
+                    }
+                }
+                running = false;
+            }
             refresh();
         }
     }
@@ -147,10 +161,13 @@ void CallSnakeMovement(Entity *entity){
     snake.MovingTo(entity);
 }
 
-void DrawSnake(void *arg){
+void RenderGame(void *arg){
+    erase();
     int x, y;
     vector<Entity> body = snake.GetBody();
     for(int i = 0; i < body.size(); i++){
         body.at(i).draw(nullptr);
     }
+    board.DisplayBoard();
+    refresh();
 }
