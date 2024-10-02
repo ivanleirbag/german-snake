@@ -21,6 +21,7 @@
 #define ZERO_X 4
 #define ZERO_Y 2
 #define MARGIN 2
+//colores
 #define WALLS 2
 #define SNAKE 1
 #define FRUIT 3
@@ -55,7 +56,6 @@ void RenderGame(void *arg);
 
 void CallSnakeMovement(Entity *entity);
 
-
 int main(){
     srand(time(0));
     initscr();
@@ -67,7 +67,7 @@ int main(){
     init_pair(WIN, COLOR_BLACK, COLOR_GREEN);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
-
+ 
    
     board.SetDimensions(WIDTH, HEIGHT);
     board.SetInitialPos(ZERO_X, ZERO_Y);
@@ -85,8 +85,8 @@ int main(){
 
 while (menu){
         points = 0;
-        snake.ResetSnake();
-        timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
+        snake.ResetSnake(); //90000 a 10000 ** 
+        timer.StartTimer(90000, TTimer::TIMER_PERIODIC);
         drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
         attroff(A_REVERSE);
         curs_set(0);
@@ -119,8 +119,6 @@ while (menu){
                 endwin();
                 running = false;
                 menu = false;
-                break;
-            case ENTER:
                 break;
             case KEY_UP:
                 snake.SetDirection(Snake::UP);
@@ -208,13 +206,14 @@ while (menu){
 }
 
 
-void CallSnakeMovement(Entity *entity){
+void CallSnakeMovement(Entity *entity /*ups*/){
     snake.MovingTo(entity);
 }
 
 void RenderGame(void *arg){
     erase();
-    int x, y;
+    int x, y, puntos;
+    puntos = (54-points);
     attron(COLOR_PAIR(SNAKE));
     vector<Entity> body = snake.GetBody();
     for(int i = 0; i < body.size(); i++){
@@ -224,12 +223,12 @@ void RenderGame(void *arg){
     attron(COLOR_PAIR(WALLS));
     board.DisplayBoard();
     attroff(COLOR_PAIR(WALLS));
-    /*move(ZERO_Y, WIDTH+8);
+    move(ZERO_Y, WIDTH+8);
     printw("PUNTOS");
     move(ZERO_Y+1, WIDTH+8);
     printw("_______________________________");
     move(ZERO_Y+3, WIDTH+8);
-    printw("¡FALTAN %d PUNTOS PARA GANAR!", (54-points));
+    printw("¡FALTAN %d PUNTOS PARA GANAR!", puntos);
     move(ZERO_Y+5, WIDTH+8);
     printw("CONTROLES");
     move(ZERO_Y+7, WIDTH+8);
@@ -237,7 +236,7 @@ void RenderGame(void *arg){
     move(ZERO_Y+9, WIDTH+8);
     printw("[FLECHAS] MOVIMIENTO");
     move(ZERO_Y+11, WIDTH+8);
-    printw("[ESC] SALIR");*/
+    printw("[ESC] SALIR");
     
     refresh();
 }

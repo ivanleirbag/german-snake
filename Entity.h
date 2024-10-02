@@ -29,7 +29,6 @@ public:
     void SetPosx(int sPosx);
     void SetPosy(int sPosy);
     void SetSymbol(char sSymbol);
-
     void SetBoundaries(int sWidth, int sHeight, int sZerox, int sZeroy);
 
     /*virtual void moveTo(){
