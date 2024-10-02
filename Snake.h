@@ -13,7 +13,7 @@ private:
     vector<Entity>body;
     int direction;
     int lastDirection;
-    
+    int nextX, nextY;
 
 public:
     bool isDead;
@@ -33,13 +33,19 @@ public:
 
    ~Snake();
 
+    void ResetSnake();
+
     void SetDirection(int direc);
 
     int GetDirection();
 
     vector<Entity> GetBody();
+
+    Entity GetHead();
     
     void MovingTo(Entity *fruit);
+
+    void Grow();
 
     void DrawSnake(void *arg);  //deprecated
 

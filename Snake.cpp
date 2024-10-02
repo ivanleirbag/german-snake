@@ -4,16 +4,23 @@ Snake::Snake(int startX, int startY,
         int bWidth, int bHeight,
         int zeroX, int zeroY)
         : Entity(startX, startY, 'A') {
-             Entity::SetBoundaries(bWidth, bHeight, zeroX, zeroY);
-        this->SetPosx(startX);
-        this->SetPosy(startY);
-        this->direction = LEFT;
-        this->lastDirection = direction;
-        this->isDead = false;
+        Entity::SetBoundaries(bWidth, bHeight, zeroX, zeroY);
+        direction = LEFT;
+        lastDirection = direction;
+        isDead = false;
         body.push_back(*this);
         }
 
 Snake::~Snake(){
+}
+
+void Snake::ResetSnake(){
+    body.clear();
+    Entity head(GetBWidth()/2, GetBHeight()/2, 'A');
+    direction = LEFT;
+    lastDirection = direction;
+    isDead = false;
+    body.push_back(head);
 }
 
 void Snake::SetDirection(int direc){
@@ -31,14 +38,14 @@ int Snake::GetDirection(){
 
 void Snake::MovingTo(Entity *fruit){
     Entity oldHead = body.at(0);
-    int nextX = oldHead.GetPosx();
-    int nextY = oldHead.GetPosy();
+    nextX = oldHead.GetPosx();
+    nextY = oldHead.GetPosy();
 
     switch (direction)
     {
     case UP:
         nextY -= 1;
-        if (nextY < GetBZerox()){
+        if (nextY < GetBZeroy()){
             nextY = GetBZeroy() + GetBHeight(); 
         }
         break;
@@ -65,18 +72,11 @@ void Snake::MovingTo(Entity *fruit){
     }
 
     Entity newHead(nextX, nextY, 'A');
-    
-
-    //Chequea si comio una fruta
-    if(body.at(0).GetPosx() == fruit->GetPosx() && body.at(0).GetPosy() == fruit->GetPosy()){
-        body.insert(body.begin(), newHead);
-    }else{
-        body.insert(body.begin(), newHead);
-        body.pop_back();
-    }
+    body.insert(body.begin(), newHead);
+    body.pop_back();
 
     //Chequea colisiones
-   if (body.size() > 3){
+   if (body.size() > 4){
         for (int i = 2; i < body.size(); i++){
             if (body.at(0).collidesWith(body.at(i-1))){
                 isDead = true;
@@ -93,6 +93,14 @@ void Snake::MovingTo(Entity *fruit){
     }
 }
 
+void Snake::Grow(){
+    Entity newHead(nextX, nextY, 'A');
+    if(body.back().GetSymbol() == 90){
+        newHead.SetSymbol('a');
+    }
+    body.insert(body.begin(), newHead);
+}
+
 void Snake::DrawSnake(void *arg){
     for(int i = 1; i < body.size(); i++){
         body.at(i).draw(nullptr);
@@ -105,4 +113,8 @@ void Snake::KillSnake(){
 
 vector<Entity> Snake::GetBody(){
     return body;
+}
+
+Entity Snake::GetHead(){
+    return body.at(0);
 }

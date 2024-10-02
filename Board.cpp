@@ -42,7 +42,8 @@ void Board::DisplayBoard(){
 
     for (i=0-margin; i < height+margin; i++){
         for (j=0-margin; j < width+margin; j++){ 
-            if(i < 0 || i >= height || j < 0 || j >= width){
+            if(i < 0 || i >= height ||
+               j < 0 || j >= width){
                 move((zeroy+i), (zerox+j));
                 printw("+");
             }

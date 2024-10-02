@@ -32,18 +32,18 @@ bool running = false;
 //Objetos Init
 Board board;
 
-Snake snake(20, 10,
-    WIDTH-1, HEIGHT-1,
+Snake snake(20, 15,
+    WIDTH, HEIGHT,
     ZERO_X,
     ZERO_Y);
 Snake *snakePtr = &snake;
 
-Entity entity(23, 25, '*');
-Entity *enttPtr = &entity;
+Entity fruit(23, 25, '*');
+Entity *enttPtr = &fruit;
+Entity head(999, 999, 'x');
 
 TTimer timer;
 TTimer drawTimer;
-
 
 void RenderGame(void *arg);
 
@@ -51,6 +51,7 @@ void CallSnakeMovement(Entity *entity);
 
 
 int main(){
+    srand(time(0));
     initscr();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
@@ -61,8 +62,8 @@ int main(){
     board.SetMargin(MARGIN);
 
 
-    Entity *entityPtr = &entity;
-    entity.SetBoundaries(WIDTH-1,      HEIGHT-1, //-1 magico
+    Entity *fruitPtr = &fruit;
+    fruit.SetBoundaries(WIDTH,      HEIGHT,
                         (ZERO_X), 
                         (ZERO_Y));
     
@@ -74,6 +75,9 @@ int main(){
     drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
 
 while (menu){
+
+        snake.ResetSnake();
+    
         attroff(A_REVERSE);
         curs_set(0);
         erase();
@@ -95,6 +99,8 @@ while (menu){
         while (running){
             key = getch();
             
+
+            //Input
             switch (key){
             case ESC:
                 timer.StopTimer();
@@ -105,7 +111,6 @@ while (menu){
                 menu = false;
                 break;
             case ENTER:
-                snake.KillSnake();
                 break;
             case KEY_UP:
                 snake.SetDirection(Snake::UP);
@@ -123,21 +128,51 @@ while (menu){
                 break;
             }
 
-
+            //Render de la pantalla y movimientos
             timer.TimerTask();
             drawTimer.TimerTask();
-            entity.draw(nullptr);
-            
+            fruit.draw(nullptr);
 
+            //Come la fruta?
+            head = snake.GetHead();
+            if (fruit.collidesWith(head)){
+                snake.Grow();
+                int newX = ZERO_X + (rand()%WIDTH);
+                int newY = ZERO_Y + (rand()%HEIGHT);
+                fruit.SetPosx(newX);
+                fruit.SetPosy(newY);
+            }
+            
+            //Pantalla de muerte
             if(snake.isDead){
                 timer.StopTimer();
                 drawTimer.StopTimer();
-                move((ZERO_Y+(HEIGHT/2)), (ZERO_X+(WIDTH/2)-4));
+                move((ZERO_Y+(HEIGHT/2)-1), (ZERO_X+(WIDTH/2)-4));
                 attron(A_REVERSE);
                 printw("Perdiste!");
                 refresh();
                 for (int i=0-MARGIN; i < (HEIGHT+MARGIN)/2; i++){
-                    for (int j=0-MARGIN; j < WIDTH+MARGIN; j++){ 
+                    for (int j=0-MARGIN; j < WIDTH+MARGIN+1; j++){ 
+                        move((ZERO_Y+i), (ZERO_X+j));
+                        printw(" ");
+                        move((ZERO_Y+HEIGHT-i), (ZERO_X+WIDTH-j));
+                        printw(" ");
+                        refresh();
+                        this_thread::sleep_for(chrono::milliseconds(5));  
+                    }
+                }
+                running = false;
+            }
+            //
+            if(snake.GetBody().size() > 54){
+                timer.StopTimer();
+                drawTimer.StopTimer();
+                move((ZERO_Y+(HEIGHT/2)-1), (ZERO_X+(WIDTH/2)-4));
+                attron(A_REVERSE);
+                printw("Ganaste!");
+                refresh();
+                for (int i=0-MARGIN; i < (HEIGHT+MARGIN)/2; i++){
+                    for (int j=0-MARGIN; j < WIDTH+MARGIN+1; j++){ 
                         move((ZERO_Y+i), (ZERO_X+j));
                         printw(" ");
                         move((ZERO_Y+HEIGHT-i), (ZERO_X+WIDTH-j));

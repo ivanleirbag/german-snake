@@ -50,8 +50,8 @@
     void Entity::SetBoundaries(int sWidth, int sHeight, int sZerox, int sZeroy){
         bWidth = sWidth;
         bHeight = sHeight;
-        bZerox = sZerox;
-        bZeroy = sZeroy;
+        bZerox = sZerox-1;
+        bZeroy = sZeroy-1;
     }
 
     /*void Entity::moveTo(){
