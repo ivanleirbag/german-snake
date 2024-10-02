@@ -45,25 +45,25 @@ void Snake::MovingTo(Entity *fruit){
     {
     case UP:
         nextY -= 1;
-        if (nextY < GetBZeroy()){
+        if (nextY < GetBZeroy()+1){
             nextY = GetBZeroy() + GetBHeight(); 
         }
         break;
     case RIGHT:
         nextX += 1;
         if (nextX > (GetBZerox() + GetBWidth())){
-            nextX = GetBZerox();
+            nextX = GetBZerox()+1;
         }
         break;
     case DOWN:
         nextY += 1;
         if (nextY > (GetBZeroy() + GetBHeight())){
-            nextY = GetBZeroy();
+            nextY = GetBZeroy()+1;
         }
         break;
     case LEFT:
         nextX -= 1;
-        if (nextX < GetBZerox()){
+        if (nextX < GetBZerox()+1){
             nextX = GetBZerox() + GetBWidth(); 
         }
         break;

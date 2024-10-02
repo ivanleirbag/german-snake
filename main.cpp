@@ -31,6 +31,7 @@
 using namespace std;
 
 int key, timerMs;
+int points = 0;
 bool menu = true;
 bool running = false;
 
@@ -43,7 +44,7 @@ Snake snake(20, 15,
     ZERO_Y);
 Snake *snakePtr = &snake;
 
-Entity fruit(23, 25, '"');
+Entity fruit(23, 25, '*');
 Entity *enttPtr = &fruit;
 Entity head(999, 999, 'x');
 
@@ -80,15 +81,13 @@ int main(){
     
     timerMs = 200;
     timer.AttachOnTimerEnttReady(CallSnakeMovement, enttPtr);
-    timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
-
     drawTimer.AttachOnTimerReady(RenderGame, nullptr);
-    drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
 
 while (menu){
-
+        points = 0;
         snake.ResetSnake();
-    
+        timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
+        drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
         attroff(A_REVERSE);
         curs_set(0);
         erase();
@@ -149,6 +148,7 @@ while (menu){
             //Come la fruta?
             head = snake.GetHead();
             if (fruit.collidesWith(head)){
+                points++;
                 snake.Grow();
                 int newX = ZERO_X + (rand()%WIDTH);
                 int newY = ZERO_Y + (rand()%HEIGHT);
@@ -224,5 +224,20 @@ void RenderGame(void *arg){
     attron(COLOR_PAIR(WALLS));
     board.DisplayBoard();
     attroff(COLOR_PAIR(WALLS));
+    /*move(ZERO_Y, WIDTH+8);
+    printw("PUNTOS");
+    move(ZERO_Y+1, WIDTH+8);
+    printw("_______________________________");
+    move(ZERO_Y+3, WIDTH+8);
+    printw("¡FALTAN %d PUNTOS PARA GANAR!", (54-points));
+    move(ZERO_Y+5, WIDTH+8);
+    printw("CONTROLES");
+    move(ZERO_Y+7, WIDTH+8);
+    printw("_______________________________");
+    move(ZERO_Y+9, WIDTH+8);
+    printw("[FLECHAS] MOVIMIENTO");
+    move(ZERO_Y+11, WIDTH+8);
+    printw("[ESC] SALIR");*/
+    
     refresh();
 }
