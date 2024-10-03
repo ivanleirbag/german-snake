@@ -21,15 +21,16 @@
 #define ZERO_X 4
 #define ZERO_Y 2
 #define MARGIN 2
-//colores
 #define WALLS 2
 #define SNAKE 1
 #define FRUIT 3
 #define LOSE 4
 #define WIN 5
+
  //g++ ./main.cpp ./TTimer.cpp ./Board.cpp ./Entity.cpp ./Snake.cpp -o main -lncurses
 
 using namespace std;
+
 
 int key, timerMs;
 int points = 0;
@@ -56,6 +57,7 @@ void RenderGame(void *arg);
 
 void CallSnakeMovement(Entity *entity);
 
+
 int main(){
     srand(time(0));
     initscr();
@@ -67,7 +69,7 @@ int main(){
     init_pair(WIN, COLOR_BLACK, COLOR_GREEN);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
- 
+
    
     board.SetDimensions(WIDTH, HEIGHT);
     board.SetInitialPos(ZERO_X, ZERO_Y);
@@ -84,9 +86,8 @@ int main(){
     drawTimer.AttachOnTimerReady(RenderGame, nullptr);
 
 while (menu){
-        points = 0;
-        snake.ResetSnake(); //90000 a 10000 ** 
-        timer.StartTimer(90000, TTimer::TIMER_PERIODIC);
+        snake.ResetSnake();
+        timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
         drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
         attroff(A_REVERSE);
         curs_set(0);
@@ -119,6 +120,8 @@ while (menu){
                 endwin();
                 running = false;
                 menu = false;
+                break;
+            case ENTER:
                 break;
             case KEY_UP:
                 snake.SetDirection(Snake::UP);
@@ -206,14 +209,14 @@ while (menu){
 }
 
 
-void CallSnakeMovement(Entity *entity /*ups*/){
+void CallSnakeMovement(Entity *entity){
     snake.MovingTo(entity);
 }
 
 void RenderGame(void *arg){
     erase();
-    int x, y;
     int puntos_faltantes = 54 - points; 
+    int x, y;
     attron(COLOR_PAIR(SNAKE));
     vector<Entity> body = snake.GetBody();
     for(int i = 0; i < body.size(); i++){
@@ -228,7 +231,7 @@ void RenderGame(void *arg){
     move(ZERO_Y+1, WIDTH+8);
     printw("_______________________________");
     move(ZERO_Y+3, WIDTH+8);
-    printw("¡FALTAN %d PUNTOS PARA GANAR!", puntos_faltantes);
+    printw("Faltan %d PUNTOS para ganar!", puntos_faltantes);
     move(ZERO_Y+5, WIDTH+8);
     printw("CONTROLES");
     move(ZERO_Y+7, WIDTH+8);
