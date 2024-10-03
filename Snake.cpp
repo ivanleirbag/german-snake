@@ -95,9 +95,6 @@ void Snake::MovingTo(Entity *fruit){
 
 void Snake::Grow(){
     Entity newHead(nextX, nextY, 'A');
-    if(body.back().GetSymbol() == 90){
-        newHead.SetSymbol('a');
-    }
     body.insert(body.begin(), newHead);
 }
 
