@@ -88,7 +88,11 @@ void Snake::MovingTo(Entity *fruit){
     for (int j = 1; j < body.size(); j++)
     {
         char nextLetter = body.at(j).GetSymbol();
-        nextLetter++;
+        if(nextLetter >= 90 && nextLetter < 96){
+            nextLetter = nextLetter+6;
+        }else{
+            nextLetter++;
+        }
         body.at(j).SetSymbol(nextLetter);     
     }
 }

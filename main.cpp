@@ -32,6 +32,8 @@
 using namespace std;
 
 int key, timerMs;
+int newX; 
+int newY;
 int points = 0;
 bool menu = true;
 bool running = false;
@@ -86,7 +88,7 @@ int main(){
 while (menu){
         points = 0;
         snake.ResetSnake(); //90000 a 10000 ** 
-        timer.StartTimer(90000, TTimer::TIMER_PERIODIC);
+        timer.StartTimer(70000, TTimer::TIMER_PERIODIC);
         drawTimer.StartTimer(timerMs, TTimer::TIMER_PERIODIC);
         attroff(A_REVERSE);
         curs_set(0);
@@ -148,8 +150,8 @@ while (menu){
             if (fruit.collidesWith(head)){
                 points++;
                 snake.Grow();
-                int newX = ZERO_X + (rand()%WIDTH);
-                int newY = ZERO_Y + (rand()%HEIGHT);
+                newX = ZERO_X + (rand()%WIDTH);
+                newY = ZERO_Y + (rand()%HEIGHT);
                 fruit.SetPosx(newX);
                 fruit.SetPosy(newY);
             }
@@ -177,7 +179,7 @@ while (menu){
                 running = false;
             }
             //
-            if(snake.GetBody().size() > 54){
+            if(snake.GetBody().size() >= 54){
                 timer.StopTimer();
                 drawTimer.StopTimer();
                 move((ZERO_Y+(HEIGHT/2)-1), (ZERO_X+(WIDTH/2)-4));
@@ -212,7 +214,6 @@ void CallSnakeMovement(Entity *entity /*ups*/){
 
 void RenderGame(void *arg){
     erase();
-    int x, y;
     int puntos_faltantes = 54 - points; 
     attron(COLOR_PAIR(SNAKE));
     vector<Entity> body = snake.GetBody();
@@ -228,7 +229,7 @@ void RenderGame(void *arg){
     move(ZERO_Y+1, WIDTH+8);
     printw("_______________________________");
     move(ZERO_Y+3, WIDTH+8);
-    printw("¡FALTAN %d PUNTOS PARA GANAR!", puntos_faltantes);
+    printw("Faltan %d PUNTOS para ganar!", puntos_faltantes);
     move(ZERO_Y+5, WIDTH+8);
     printw("CONTROLES");
     move(ZERO_Y+7, WIDTH+8);

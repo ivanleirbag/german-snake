@@ -14,11 +14,9 @@ class NumberBox{
 public:
     bool isFocused;
 
-private:
-    int posx, posy;
-    vector<int> content;
-    int width;
-    //seters
+    NumberBox();
+    ~NumberBox();
+        //seters
     void SetPosx(int sPosx);
 
     void SetPosy(int sPosy);
@@ -27,6 +25,10 @@ private:
     
     void SetContent(int keyPressed);
 
+    void SetColors(int setColorPair);
+
+    void UseColors();
+
     //getters
     int GetPosx();
 
@@ -34,11 +36,18 @@ private:
 
     int GetWidth();
 
-    int GetContent();
+    vector<int> GetContent();
 
     //display
     void DisplayBox();
 
+
+private:
+    int posx, posy;
+    bool useColor;
+    int colorPair;
+    vector<int> content;
+    int width;
 };
 
 
