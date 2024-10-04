@@ -61,3 +61,7 @@ void TTimer::TimerTask()
     }
 }
 
+void TTimer::ChangeTime(int newTime){
+    timerTime = newTime;
+}
+

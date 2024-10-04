@@ -27,6 +27,8 @@ class TTimer
 
         void TimerTask();
 
+        void ChangeTime(int newTime);
+
     protected:
 
     private:

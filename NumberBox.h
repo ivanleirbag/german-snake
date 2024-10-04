@@ -3,9 +3,10 @@
 
 #include <ncurses.h>
 #include <vector>
+#include <cmath>
 
 #define ENTER 10
-#define DELETE 
+#define ESC 27 
 
 using namespace std;
 
@@ -14,7 +15,7 @@ class NumberBox{
 public:
     bool isFocused;
 
-    NumberBox();
+    NumberBox(int cPosx, int cPosy, int cWidth);
     ~NumberBox();
         //seters
     void SetPosx(int sPosx);
@@ -27,6 +28,8 @@ public:
 
     void SetColors(int setColorPair);
 
+    void Focus();
+
     void UseColors();
 
     //getters
@@ -36,7 +39,7 @@ public:
 
     int GetWidth();
 
-    vector<int> GetContent();
+    int GetContent();
 
     //display
     void DisplayBox();
@@ -46,8 +49,12 @@ private:
     int posx, posy;
     bool useColor;
     int colorPair;
-    vector<int> content;
     int width;
+    vector<int> content;  
+
+    int zeroRel = posx+width;
+    int relX = 0;
+    int relY = posy;
 };
 
 
