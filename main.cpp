@@ -28,6 +28,7 @@
 #define FRUIT 3
 #define LOSE 4
 #define WIN 5
+#define NUMBER_BOX 6
 //velocidad del juego
 #define MAX_SPEED 10000
 #define MIN_SPEED 90000
@@ -78,10 +79,11 @@ int main(){
     init_pair(FRUIT, COLOR_GREEN, COLOR_RED);
     init_pair(LOSE, COLOR_BLACK, COLOR_RED);
     init_pair(WIN, COLOR_BLACK, COLOR_GREEN);
+    init_pair(NUMBER_BOX, COLOR_BLACK, COLOR_CYAN);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
  
-    speedBox.SetColors(SNAKE);
+    speedBox.SetColors(NUMBER_BOX);
     speedBox.UseColors();
 
    
